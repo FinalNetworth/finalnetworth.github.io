@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <title>Networth Scenarios</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="index.js">
+  </head>
+
+  <body>
+    <div class="flex-container">
+      <div class="flex-item">
+        <h2>Networth Scenarios</h2>
+      </div>
+      <div class="flex-item">
+        I'm <input id="age" size="2" onkeyup="calculator()" value="18"></input> years old and plan to die at the age of <input id="death" size="2" onkeyup="calculator()" value="90"></input>
+      </div>
+      <div class="flex-item">
+        My current networth is <input id="startingNetworth" size="7" onkeyup="calculator()" value="$50,000"></input>
+      </div>
+      <div class="flex-item">
+          My ending networth is $<span id="networth">0</span>
+      </div>
+      <div class="flex-item" style="width:100%;">
+        <hr style="flex: 0 0 100%"/>
+      </div>
+      <div class="flex-item">
+        I plan to <select><option>save</option><option>spend</option></select> $<input size="6" value="10000"></input> a <select><option>year</option><option>month</option></select> from age <input size="2" value="18"></input> to <input size="2" value="62"></input> <button onclick="remove(event)">Delete</button>
+      </div>
+      <div class="flex-item">
+        <button onclick="add(event)">Add</button>
+      </div>
+    </div>
+    
+    <script src="index.js"></script>
+  </body>
+</html>
