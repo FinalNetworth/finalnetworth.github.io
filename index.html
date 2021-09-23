@@ -1,38 +1,67 @@
 <html>
   <head>
-    <title>Networth Scenarios</title>
+    <title>Final Networth</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="index.js">
   </head>
 
   <body>
     <div class="flex-container">
       <div class="flex-item">
-        <h2>Networth Scenarios</h2>
+        <h2>Final Networth</h2>
       </div>
       <div class="flex-item">
-        I'm <input id="age" size="2" onkeyup="calculator()" value="18"></input> years old and plan to die at the age of <input id="death" size="2" onkeyup="calculator()" value="90"></input>
+        I'm <input id="age" size="2" onchange="recalculate()" value="38"></input> years old and plan to die at the age of <input id="death" size="2" onchange="recalculate()" value="92"></input>
       </div>
       <div class="flex-item">
-        My current networth is <input id="startingNetworth" size="7" onkeyup="calculator()" value="$50,000"></input>
+        My current networth is <input id="startingNetworth" size="7" onchange="formatStartingNetworth(); recalculate()" value="575000"></input>
       </div>
       <div class="flex-item">
-          My ending networth is $<span id="networth">0</span>
+        My expected investment return is <input id="interest" size="2" onchange="recalculate()" value="7"></input>%
+      </div>
+      <div class="flex-item">
+          My ending networth is <span id="networth">$0</span>
       </div>
       <div class="flex-item" style="width:100%;">
         <hr style="flex: 0 0 100%"/>
       </div>
       <div class="flex-item">
-        I plan to <select><option>save</option><option>spend</option></select> $<input size="6" value="10000"></input> a <select><option>year</option><option>month</option></select> from age <input size="2" value="18"></input> to <input size="2" value="62"></input> <button onclick="remove(event)">Delete</button>
+        <h3>Monetary Changes</h3>
+      </div>
+      <div class="flex-item data">
+        I plan to <select id="operation" onchange="recalculate()" onmouseup="recalculate()"><option value="+">save</option><option value="-">spend</option></select> $<input id="amount" size="6" value="50000" onchange="recalculate()"></input> a <select id="frequency" onchange="recalculate()" onmouseup="recalculate()"><option value="1">year</option><option value="12">month</option></select> from age <input id="start" size="2" value="38" onchange="recalculate()"></input> to <input id="end" size="2" value="40" onchange="recalculate()"></input> <button onclick="remove(event); recalculate()">Delete</button>
+      </div>
+      <div class="flex-item data">
+        I plan to <select id="operation" onchange="recalculate()" onmouseup="recalculate()"><option value="+">save</option><option value="-" selected>spend</option></select> $<input id="amount" size="6" value="30000" onchange="recalculate()"></input> a <select id="frequency" onchange="recalculate()" onmouseup="recalculate()"><option value="1">year</option><option value="12">month</option></select> from age <input id="start" size="2" value="41" onchange="recalculate()"></input> to <input id="end" size="2" value="42" onchange="recalculate()"></input> <button onclick="remove(event); recalculate()">Delete</button>
       </div>
       <div class="flex-item">
         <button onclick="add(event)">Add</button>
       </div>
+      <div class="flex-item" style="width:100%;">
+        <hr style="flex: 0 0 100%"/>
+      </div>
+      <div class="flex-item">
+        <h3>Data</h3>
+      </div>
+      <div class="flex-item">
+        <table id="ammortization">
+          <thead>
+            <tr>
+              <th>Age</th>
+              <th>Networth</th>
+              <th>Contributon</th>
+              <th>Interest</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
     </div>
     
+    <script src="decimal.js"></script>
     <script src="index.js"></script>
   </body>
 </html>
