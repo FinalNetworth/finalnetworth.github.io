@@ -40,7 +40,9 @@ function recalculate() {
 
     var networth = new Decimal(numbersOnly(document.getElementById('startingNetworth').value));
 
-    if (x != 0) {
+    if (x != 0 && compounded[x - 1].toNumber() <= 0) {
+      networth = new Decimal(0);
+    } else if (x != 0) {
       networth = compounded[x - 1]
     }
 
