@@ -13,10 +13,10 @@
         <h2>Final Networth</h2>
       </div>
       <div class="flex-item">
-        I'm <input id="age" size="2" onchange="recalculate()" value="38"></input> years old and plan to die at the age of <input id="death" size="2" onchange="recalculate()" value="92"></input>
+        I'm <input id="age" size="2" onchange="recalculate()" value="18"></input> years old and plan to die at the age of <input id="death" size="2" onchange="recalculate()" value="90"></input>
       </div>
       <div class="flex-item">
-        My current networth is <input id="startingNetworth" size="7" onchange="formatStartingNetworth(); recalculate()" value="575000"></input>
+        My current networth is <input id="startingNetworth" size="7" onchange="formatMoney(event); recalculate()" value="$1,000"></input>
       </div>
       <div class="flex-item">
         My expected investment return is <input id="interest" size="2" onchange="recalculate()" value="7"></input>%
@@ -31,10 +31,10 @@
         <h3>Monetary Changes</h3>
       </div>
       <div class="flex-item data">
-        I plan to <select id="operation" onchange="recalculate()" onmouseup="recalculate()"><option value="+">save</option><option value="-">spend</option></select> $<input id="amount" size="6" value="50000" onchange="recalculate()"></input> a <select id="frequency" onchange="recalculate()" onmouseup="recalculate()"><option value="1">year</option><option value="12">month</option></select> from age <input id="start" size="2" value="38" onchange="recalculate()"></input> to <input id="end" size="2" value="40" onchange="recalculate()"></input> <button onclick="remove(event); recalculate()">Delete</button>
+        I plan to <select id="operation" onchange="recalculate()" onmouseup="recalculate()"><option value="+">save</option><option value="-">spend</option></select> <input id="amount" size="6" value="$1,200" onchange="formatMoney(event); recalculate()"></input> a <select id="frequency" onchange="recalculate()" onmouseup="recalculate()"><option value="1">year</option><option value="12">month</option></select> from age <input id="start" size="2" value="18" onchange="recalculate()"></input> to <input id="end" size="2" value="62" onchange="recalculate()"></input> <button onclick="remove(event); recalculate()">Delete</button>
       </div>
       <div class="flex-item data">
-        I plan to <select id="operation" onchange="recalculate()" onmouseup="recalculate()"><option value="+">save</option><option value="-" selected>spend</option></select> $<input id="amount" size="6" value="30000" onchange="recalculate()"></input> a <select id="frequency" onchange="recalculate()" onmouseup="recalculate()"><option value="1">year</option><option value="12">month</option></select> from age <input id="start" size="2" value="41" onchange="recalculate()"></input> to <input id="end" size="2" value="42" onchange="recalculate()"></input> <button onclick="remove(event); recalculate()">Delete</button>
+        I plan to <select id="operation" onchange="recalculate()" onmouseup="recalculate()"><option value="+">save</option><option value="-" selected>spend</option></select> <input id="amount" size="6" value="$36,000" onchange="formatMoney(event); recalculate()"></input> a <select id="frequency" onchange="recalculate()" onmouseup="recalculate()"><option value="1">year</option><option value="12">month</option></select> from age <input id="start" size="2" value="63" onchange="recalculate()"></input> to <input id="end" size="2" value="90" onchange="recalculate()"></input> <button onclick="remove(event); recalculate()">Delete</button>
       </div>
       <div class="flex-item">
         <button onclick="add(event)">Add</button>
@@ -46,7 +46,7 @@
         <h3>Data</h3>
       </div>
       <div class="flex-item">
-        <table id="ammortization">
+        <table>
           <thead>
             <tr>
               <th>Age</th>
@@ -55,7 +55,7 @@
               <th>Interest</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="ammortization">
           </tbody>
         </table>
       </div>
