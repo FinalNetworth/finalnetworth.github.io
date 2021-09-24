@@ -45,7 +45,7 @@ function recalculate() {
     }
 
     compounded[x] = interest.times(networth.add(value[x]));
-    ammortizationTable = [{'age': x + startAge, 'networth': parseInt(networth.toString()), 'contribution': value[x].toString(), 'interest': parseInt(compounded[x].sub(networth).sub(value[x]).toString()) }];
+    ammortizationTable.push({'age': x + startAge, 'networth': parseInt(networth.toString()), 'contribution': value[x].toString(), 'interest': parseInt(compounded[x].sub(networth).sub(value[x]).toString()) });
   
   }
 
