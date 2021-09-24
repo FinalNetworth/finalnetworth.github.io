@@ -34,23 +34,19 @@ function recalculate() {
     }
   }
 
-  var firstIteration = true;
   var compounded = [];
   for (var x = 0; x < value.length; x++) {
     var interest = new Decimal(1 + document.getElementById('interest').value * .01);
 
-    if (firstIteration) {
-      var startingNetworth = new Decimal(numbersOnly(document.getElementById('startingNetworth').value));
+    var networth = new Decimal(numbersOnly(document.getElementById('startingNetworth').value));
 
-      compounded[x] = interest.times(startingNetworth.add(value[x]));
-      ammortizationTable = [{'age': x + startAge, 'networth': parseInt(startingNetworth.toString()), 'contribution': value[x].toString(), 'interest': parseInt(compounded[x].sub(startingNetworth).sub(value[x]).toString()) }];
+    if (x != 0) {
+      networth = compounded[x - 1]
+    }
 
-      firstIteration = false;
-    }
-    else {
-      compounded[x] = interest.times(compounded[x - 1].add(value[x])); 
-      ammortizationTable.push({'age': x + startAge, 'networth': parseInt(compounded[x - 1].toString()), 'contribution': value[x].toString(), 'interest': parseInt(compounded[x].sub(compounded[x-1]).sub(value[x]).toString()) });
-    }
+    compounded[x] = interest.times(networth.add(value[x]));
+    ammortizationTable = [{'age': x + startAge, 'networth': parseInt(networth.toString()), 'contribution': value[x].toString(), 'interest': parseInt(compounded[x].sub(networth).sub(value[x]).toString()) }];
+  
   }
 
   document.getElementById('networth').innerHTML = formatter.format(parseInt(compounded[compounded.length - 1].toString()));
