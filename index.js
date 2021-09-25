@@ -47,7 +47,7 @@ function recalculate() {
     }
 
     compounded[x] = interest.times(networth).add(value[x]);
-    ammortizationTable.push({'age': x + startAge, 'networth': parseInt(networth.toString()), 'contribution': value[x].toString(), 'interest': parseInt(compounded[x].sub(networth).sub(value[x]).toString()) });
+    ammortizationTable.push({'age': x + startAge, 'networth': formatMoney(networth.toNumber()), 'contribution': formatMoney(value[x].toNumber()), 'interest': formatMoney(compounded[x].sub(networth).sub(value[x]).toNumber())});
   
   }
 
@@ -60,7 +60,7 @@ function add(event) {
   var div = document.createElement('div');
   div.className += 'data';
   div.className += ' flex-item';
-  div.innerHTML = 'I plan to <select id="operation" onchange="recalculate()" onmouseup="recalculate()"><option value="+">save</option><option value="-">spend</option></select> <input id="amount" size="6" value="10000" onchange="formatMoney(event); recalculate()"></input> a <select id="frequency" onchange="recalculate()" onmouseup="recalculate()"><option value="1">year</option><option value="12">month</option></select> from age <input id="start" size="2" value="18" onchange="recalculate()"></input> to <input id="end" size="2" value="62" onchange="recalculate()"></input> <button onclick="remove(event); recalculate()">Delete</button>';
+  div.innerHTML = 'I plan to <select id="operation" onchange="recalculate()" onmouseup="recalculate()"><option value="+">save</option><option value="-">spend</option></select> <input id="amount" size="6" value="10000" onchange="formatMoneyEvent(event); recalculate()"></input> a <select id="frequency" onchange="recalculate()" onmouseup="recalculate()"><option value="1">year</option><option value="12">month</option></select> from age <input id="start" size="2" value="18" onchange="recalculate()"></input> to <input id="end" size="2" value="62" onchange="recalculate()"></input> <button onclick="remove(event); recalculate()">Delete</button>';
   event.srcElement.parentNode.parentNode.insertBefore(div, event.srcElement.parentNode);
 
   recalculate();
@@ -76,7 +76,11 @@ function numbersOnly(questionableNumber) {
   return questionableNumber.replace(/\D/g,'');
 }
 
-function formatMoney(event) {
+function formatMoney(number) {
+  return formatter.format(number);
+}
+
+function formatMoneyEvent(event) {
   event.srcElement.value = formatter.format(numbersOnly(event.srcElement.value));
 }
 
