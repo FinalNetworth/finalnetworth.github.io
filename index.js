@@ -10,15 +10,21 @@ window.onload = function() {
 
   for (var key in data) {
     var element = document.getElementById(key);
-    element.value = data[key];
-    element.dispatchEvent(new Event('change'));
+
+    if (Array.isArray(data[key])) {
+      
+    }
+    else {
+      element.value = data[key];
+      element.dispatchEvent(new Event('change'));
+    }
   }
 
   recalculate();
 }
 
 function recalculate() {
-  var rules = document.querySelectorAll('.data');
+  var rules = processRules(document.querySelectorAll('.data'));
 
   var age = parseInt(document.getElementById('age').value);
   var startAge = age; 
@@ -30,13 +36,13 @@ function recalculate() {
 
   for (age; age <= death; age++) {
     for (var x = 0; x < rules.length; x++) {
-      if (age >= rules[x].childNodes[7].value && age <= rules[x].childNodes[9].value) {
+      if (age >= rules[x].start && age <= rules[x].end) {
         var currentAmount = value[age - startAge];
-        var changeAmount = new Decimal(numbersOnly(rules[x].childNodes[3].value));
-        var changeFrequency = new Decimal(numbersOnly(rules[x].childNodes[5].value));
+        var changeAmount = new Decimal(numbersOnly(rules[x].amount));
+        var changeFrequency = new Decimal(numbersOnly(rules[x].frequency));
         var changeTotal = changeAmount.times(changeFrequency);
 
-        if (rules[x].childNodes[1].value == "+") {
+        if (rules[x].operation == "+") {
           value[age - startAge] = currentAmount.add(changeTotal)
         }
         else {
@@ -68,7 +74,8 @@ function recalculate() {
     'age': startAge, 
     'death': death, 
     'startingNetworth': numbersOnly(document.getElementById('startingNetworth').value),
-    'interest': numbersOnly(document.getElementById('interest').value)
+    'interest': numbersOnly(document.getElementById('interest').value),
+    'rules': rules
   };
 
   window.history.pushState({}, '', '#' + encodeURIComponent(JSON.stringify(saveData)));
@@ -121,4 +128,20 @@ function updateAmmortizationTable(data) {
   }
 }
 
-recalculate();
+function processRules(rules) {
+  var pureRules = [];
+
+  for (var x = 0; x < rules.length; x++) {
+    var data = {
+      'operation': rules[x].childNodes[1].value,
+      'amount': rules[x].childNodes[3].value,
+      'frequency': rules[x].childNodes[5].value,
+      'start': rules[x].childNodes[7].value,
+      'end': rules[x].childNodes[9].value,
+    };
+
+    pureRules.push(data);
+  }
+
+  return pureRules;
+}
