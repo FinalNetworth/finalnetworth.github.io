@@ -6,18 +6,25 @@ var formatter = new Intl.NumberFormat(undefined, {
 });
 
 window.onload = function() {
-  var data = JSON.parse(decodeURIComponent(window.location.hash.substr(1)));
-
-  for (var key in data) {
-    var element = document.getElementById(key);
-
-    if (Array.isArray(data[key])) {
-      
-    }
-    else {
-      element.value = data[key];
-      element.dispatchEvent(new Event('change'));
-    }
+  try {
+   var data = JSON.parse(decodeURIComponent(window.location.hash.substr(1)));
+ 
+   for (var key in data) {
+     var element = document.getElementById(key);
+ 
+     if (Array.isArray(data[key])) {
+       for (var rule in data[key]) {
+         add({'operation': data[key][rule].operation, 'amount': data[key][rule].amount, 'frequency': data[key][rule].frequency, 'start': data[key][rule].start, 'end': data[key][rule].end});
+       }
+     }
+     else {
+       element.value = data[key];
+       element.dispatchEvent(new Event('change'));
+     }
+   }
+  }
+  catch (e) {
+    add();
   }
 
   recalculate();
@@ -83,12 +90,48 @@ function recalculate() {
   updateAmmortizationTable(ammortizationTable);
 }
 
-function add(event) {
+function add(options) {
+  var default_args = {
+    'operation': '+',
+    'amount': formatMoney(1000),
+    'frequency': 1,
+    'start': 18,
+    'end': 82
+  }
+
+  if (typeof options == "undefined") {
+    options = [];
+  }
+
+  for(var index in default_args) {
+    if(typeof options[index] == "undefined") options[index] = default_args[index];
+  }
+
+  var plusSelected = '';
+  var minusSelected = '';
+
+  var yearSelected = '';
+  var monthSelected = '';
+
+  if (options['operation'] == '+') {
+    plusSelected = ' selected';
+  }
+  else {
+    minusSelected = ' selected';
+  }
+
+  if (options['frequency'] == 1) {
+    yearSelected = ' selected';
+  }
+  else {
+    monthSelected = ' selected';
+  }
+
   var div = document.createElement('div');
-  div.className += 'data';
-  div.className += ' flex-item';
-  div.innerHTML = 'I plan to <select id="operation" onchange="recalculate()"><option value="+">save</option><option value="-">spend</option></select> <input id="amount" size="6" value="10000" onchange="formatMoneyEvent(event); recalculate()"></input> a <select id="frequency" onchange="recalculate()"><option value="1">year</option><option value="12">month</option></select> from age <input id="start" size="2" value="18" onchange="recalculate()"></input> to <input id="end" size="2" value="62" onchange="recalculate()"></input> <button onclick="remove(event); recalculate()">Delete</button>';
-  event.srcElement.parentNode.parentNode.insertBefore(div, event.srcElement.parentNode);
+  div.className += 'data flex-item';
+  div.innerHTML = 'I plan to <select id="operation" onchange="recalculate()"><option value="+"' + plusSelected + '>save</option><option value="-"' + minusSelected + '>spend</option></select> <input id="amount" size="6" value="' + options['amount'] + '" onchange="formatMoneyEvent(event); recalculate()"></input> a <select id="frequency" onchange="recalculate()"> <option value="1"' + yearSelected + '>year</option> <option value="12"' + monthSelected + '>month</option></select> from age <input id="start" size="2" value="' + options['start'] + '" onchange="recalculate()"></input> to <input id="end" size="2" value="' + options['end']+ '" onchange="recalculate()"></input> <button onclick="remove(event); recalculate()">Delete</button>';
+ 
+  document.getElementById('container').insertBefore(div, document.getElementById('last'));
 
   recalculate();
 }

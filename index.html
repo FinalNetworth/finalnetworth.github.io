@@ -8,7 +8,7 @@
   </head>
 
   <body>
-    <div class="flex-container">
+    <div class="flex-container" id="container">
       <div class="flex-item">
         <h2>Final Networth</h2>
       </div>
@@ -30,14 +30,8 @@
       <div class="flex-item">
         <h3>Monetary Changes</h3>
       </div>
-      <div class="flex-item data">
-        I plan to <select id="operation" onchange="recalculate()" onmouseup="recalculate()"><option value="+">save</option><option value="-">spend</option></select> <input id="amount" size="6" value="$1,200" onchange="formatMoneyEvent(event); recalculate()"></input> a <select id="frequency" onchange="recalculate()" onmouseup="recalculate()"><option value="1">year</option><option value="12">month</option></select> from age <input id="start" size="2" value="18" onchange="recalculate()"></input> to <input id="end" size="2" value="62" onchange="recalculate()"></input> <button onclick="remove(event); recalculate()">Delete</button>
-      </div>
-      <div class="flex-item data">
-        I plan to <select id="operation" onchange="recalculate()" onmouseup="recalculate()"><option value="+">save</option><option value="-" selected>spend</option></select> <input id="amount" size="6" value="$36,000" onchange="formatMoneyEvent(event); recalculate()"></input> a <select id="frequency" onchange="recalculate()" onmouseup="recalculate()"><option value="1">year</option><option value="12">month</option></select> from age <input id="start" size="2" value="63" onchange="recalculate()"></input> to <input id="end" size="2" value="90" onchange="recalculate()"></input> <button onclick="remove(event); recalculate()">Delete</button>
-      </div>
-      <div class="flex-item">
-        <button onclick="add(event)">Add</button>
+      <div class="flex-item" id="last">
+        <button onclick="add()">Add</button>
       </div>
       <div class="flex-item" style="width:100%;">
         <hr style="flex: 0 0 100%"/>
