@@ -7,30 +7,30 @@ var formatter = new Intl.NumberFormat(undefined, {
 
 window.onload = function() {
   try {
-   var data = JSON.parse(decodeURIComponent(window.location.hash.substr(1)));
+    var data = JSON.parse(decodeURIComponent(window.location.hash.substr(1)));
  
-   for (var key in data) {
-     var element = document.getElementById(key);
+    for (var key in data) {
+      var element = document.getElementById(key);
  
-     if (Array.isArray(data[key])) {
-       for (var rule in data[key]) {
-         add({'operation': data[key][rule].operation, 'amount': data[key][rule].amount, 'frequency': data[key][rule].frequency, 'start': data[key][rule].start, 'end': data[key][rule].end});
-       }
-     }
-     else {
-       element.value = data[key];
-       element.dispatchEvent(new Event('change'));
-     }
-   }
+      if (Array.isArray(data[key])) {
+        for (var rule in data[key]) {
+          add({'operation': data[key][rule].operation, 'amount': data[key][rule].amount, 'frequency': data[key][rule].frequency, 'start': data[key][rule].start, 'end': data[key][rule].end});
+        }
+      }
+      else {
+        element.value = data[key];
+        element.dispatchEvent(new Event('change'));
+      }
+    }
+
+    recalculate();
   }
   catch (e) {
-    add();
+    add({skip_url_hash: 1});
   }
-
-  recalculate();
 }
 
-function recalculate() {
+function recalculate(options) {
   var rules = processRules(document.querySelectorAll('.data'));
 
   var age = parseInt(document.getElementById('age').value);
@@ -60,11 +60,10 @@ function recalculate() {
   }
 
   var compounded = [];
+  var interest = new Decimal(1 + document.getElementById('interest').value * .01);
+  var networth = new Decimal(numbersOnly(document.getElementById('startingNetworth').value));
+
   for (var x = 0; x < value.length; x++) {
-    var interest = new Decimal(1 + document.getElementById('interest').value * .01);
-
-    var networth = new Decimal(numbersOnly(document.getElementById('startingNetworth').value));
-
     if (x != 0 && compounded[x - 1].toNumber() <= 0) {
       networth = new Decimal(0);
     } else if (x != 0) {
@@ -85,7 +84,9 @@ function recalculate() {
     'rules': rules
   };
 
-  window.history.pushState({}, '', '#' + encodeURIComponent(JSON.stringify(saveData)));
+  if (!options || options['skip_url_hash'] != 1) {
+    window.history.pushState({}, '', '#' + encodeURIComponent(JSON.stringify(saveData)));
+  }
 
   updateAmmortizationTable(ammortizationTable);
 }
@@ -96,7 +97,8 @@ function add(options) {
     'amount': formatMoney(1000),
     'frequency': 1,
     'start': 18,
-    'end': 82
+    'end': 82,
+    'skip_url_hash': 0
   }
 
   if (typeof options == "undefined") {
@@ -133,7 +135,7 @@ function add(options) {
  
   document.getElementById('container').insertBefore(div, document.getElementById('last'));
 
-  recalculate();
+  recalculate(options);
 }
 
 function remove(event) {
